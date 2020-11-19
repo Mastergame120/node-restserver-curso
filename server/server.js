@@ -1,6 +1,9 @@
 require('./config/config');
 
 const express = require('express');
+// Using Node.js `require()`
+const mongoose = require('mongoose');
+
 const app = express();
 const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
@@ -10,47 +13,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
+/* Importa al ruta de usuarios */
+app.use(require('./routes/usuario'));
 
 
-/* Crea registros */
-app.get('/usuario', function(req, res) {
-    res.json('get Usuario');
+
+/* Conexion a bd de mongoose */
+/* 'mongodb://localhost:27017/cafe' */
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true }, (err, res) => {
+    if (err) throw err;
+    console.log('Base de datos en ONLINE............');
 });
-
-
-/* Crea registros */
-app.post('/usuario', function(req, res) {
-    let body = req.body;
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona: body
-        });
-    }
-
-});
-
-
-/* Actualiza registros */
-app.put('/usuario/:id', function(req, res) {
-
-    let id = req.params.id;
-    res.json({
-        id
-    });
-    res.json('put Usuario');
-});
-
-
-/* Elimina registros */
-app.delete('/usuario', function(req, res) {
-    res.json('delete Usuario');
-});
-
 
 
 app.listen(3000, () => {
