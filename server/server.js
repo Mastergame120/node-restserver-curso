@@ -10,11 +10,12 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 
 /* Importa al ruta de usuarios */
-app.use(require('./routes/usuario'));
+/* se agrega /index ya que se configura globalmente las rutas*/
+app.use(require('./routes/index'));
 
 
 
